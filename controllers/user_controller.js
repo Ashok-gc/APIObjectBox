@@ -5,7 +5,7 @@ const registeruser =  ((req,res,next)=>{
     .then((user)=>{
         if(user != null){
 
-            let err =  new Error(`user ${req.body.username} already exists`)
+            let err =  new Error(`This ${req.body.username} user already exists`)
             res.status(400)
             return next(err)
         }
@@ -15,7 +15,6 @@ const registeruser =  ((req,res,next)=>{
             res.json(user)
            })
            .catch(next)
-           
         }
     })
    .catch(next)

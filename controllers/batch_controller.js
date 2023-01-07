@@ -12,8 +12,22 @@ const getallbatch = ((req,res,next)=>{
 
 const postnewbatch = ((req,res,next)=>{
     
-    Batch.create(req.body).then((batch)=>{
-        res.json(batch)
+    Batch.findOne({batchname : req.body.batchname})
+    .then((batch)=>{
+
+        if(batch != null){
+
+            let err =  new Error(`this ${req.body.batchname}batch already exists`)
+            res.status(400)
+            return next(err)
+        }
+        else{
+            batch =  new Batch(req.body)
+            batch.save().then((batch)=>{
+             res.json(batch)
+            })
+            .catch(next)
+         }
 
     })
     .catch(next)

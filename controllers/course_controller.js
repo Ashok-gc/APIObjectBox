@@ -11,9 +11,23 @@ const getallCourse = ((req,res,next)=>{
 } )
 
 const postnewCourse = ((req,res,next)=>{
-    
-    Course.create(req.body).then((course)=>{
-        res.json(course)
+
+    Course.findOne({coursename : req.body.coursename})
+    .then((course)=>{
+
+        if(course != null){
+
+            let err =  new Error(`this ${req.body.coursename} course already exists`)
+            res.status(400)
+            return next(err)
+        }
+        else{
+            course =  new Course(req.body)
+            course.save().then((course)=>{
+             res.json(course)
+            })
+            .catch(next)
+         }
 
     })
     .catch(next)
